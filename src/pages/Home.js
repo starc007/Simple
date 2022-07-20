@@ -22,7 +22,7 @@ const Home = () => {
       <Text value="COLLABORATION" />
       <p className="sm:text-7xl text-5xl font-bold mt-2 mb-6">
         {" "}
-        on web3 made simple and secure, with
+        on Web 3.0 made simple and secure, with
       </p>
       <Text value="NFT's" />
     </div>
