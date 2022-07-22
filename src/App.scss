@@ -1,12 +1,7 @@
 $color-light-gray: #eaece5;
 
 .text {
-  // font-size: 4em;
   position: relative;
-  // text-transform: full-width;
-  // display: flex;
-  // // gap: 15px;
-  // font-weight: bold;
 
   .letter {
     position: relative;
@@ -77,4 +72,14 @@ $color-light-gray: #eaece5;
   10% {
     transform: rotateY(0deg) skew(0, 0);
   }
+}
+
+.ql-container {
+  font-size: 19px !important;
+  font-style: normal !important;
+  font-family: "Satoshi", sans-serif !important;
+}
+.ql-container.ql-snow,
+.ql-toolbar.ql-snow {
+  border: none !important;
 }
