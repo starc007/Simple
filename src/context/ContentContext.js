@@ -71,6 +71,7 @@ export function ContentProvider({ children }) {
   const DeleteDocs = async (docId) => {
     try {
       const res = await DeleteDoc(docId);
+      setDocs(docs.filter((doc) => doc.id !== docId));
       return res;
     } catch (error) {
       return error.response;

@@ -35,7 +35,7 @@ const ReadDocs = () => {
     <div>
       {loading ? (
         <div className="flex justify-center mt-20">
-          <Loader />
+          <Loader color="black" />
         </div>
       ) : (
         <div className="mt-5 px-24">
