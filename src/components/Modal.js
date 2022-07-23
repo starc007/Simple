@@ -1,37 +1,67 @@
 import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { ethers } from "ethers";
 import { useContent } from "../context/ContentContext";
 import Loader from "./Loader";
 import toast, { Toaster } from "react-hot-toast";
+import ABI from "../ABI.json";
+const contract_address = "0xaef00c3ff2e293e093d2dcd6ff64f533d6b9558a";
 
-const Modal = ({ isOpen, setIsOpen, docId }) => {
+const Modal = ({ isOpen, setIsOpen, docId, isTokenCreated, hash }) => {
   const [address, setAddress] = useState("");
-  const { AddCollaboratorToDocs, GetUser } = useContent();
+  const { AddCollaboratorToDocs, GetUser, GetTokenID } = useContent();
   const [loading, setLoading] = useState(false);
+
+  const CreateTokens = async (tokenID) => {
+    let collection_address = "0xC497beD9692Babe5E2fEd96373D2fe82FB89C913";
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(contract_address, ABI, signer);
+    try {
+      // let Approval = await contract.setApprovalForAll(collection_address, true);
+      // await Approval.wait();
+      const mintToken = await contract.initialize(
+        collection_address,
+        tokenID,
+        1000
+      );
+      await mintToken.wait();
+      return true;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleSubmit = async () => {
     if (!address) {
       toast.error("Please enter an address");
       return;
     }
     setLoading(true);
-    const userdata = await GetUser({
-      wallet_address: address.toLowerCase(),
-    });
-    const data = {
-      docId,
-      collabId: userdata._id,
-    };
-    const res = await AddCollaboratorToDocs(data);
-    if (res.status == 200) {
-      toast.success("Collaborator added!!");
-      setAddress("");
-      setIsOpen(false);
-      setLoading(false);
-    } else if (res.status == 401) {
-      toast.error(res.data.message);
-      setLoading(false);
+    if (!isTokenCreated) {
+      const tokenID = await GetTokenID(hash);
+      console.log("tokenid", tokenID);
+
+      const result = await CreateTokens(tokenID.token_id);
     }
-    setLoading(false);
+    // const userdata = await GetUser({
+    //   wallet_address: address.toLowerCase(),
+    // });
+    // const data = {
+    //   docId,
+    //   collabId: userdata._id,
+    // };
+    // const res = await AddCollaboratorToDocs(data);
+    // if (res.status == 200) {
+    //   toast.success("Collaborator added!!");
+    //   setAddress("");
+    //   setIsOpen(false);
+    //   setLoading(false);
+    // } else if (res.status == 401) {
+    //   toast.error(res.data.message);
+    //   setLoading(false);
+    // }
+    // setLoading(false);
   };
   return (
     <>

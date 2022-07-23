@@ -6,6 +6,7 @@ import {
   getUserFromWallet,
   UpdateDocs,
   DeleteDoc,
+  getTokenID,
 } from "../api/index";
 const ContentContext = createContext();
 export function useContent() {
@@ -22,7 +23,7 @@ export function ContentProvider({ children }) {
       const { data } = await CreateDoc(metadata);
       setLoading(false);
       setDocs([data.data, ...docs]);
-      return true;
+      return data;
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -77,6 +78,14 @@ export function ContentProvider({ children }) {
       return error.response;
     }
   };
+  const GetTokenID = async (hash) => {
+    try {
+      const { data } = await getTokenID(hash);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const value = {
     CreateDocs,
     loading,
@@ -86,6 +95,7 @@ export function ContentProvider({ children }) {
     GetUser,
     UpdateDoc,
     DeleteDocs,
+    GetTokenID,
   };
   return (
     <ContentContext.Provider value={value}>{children}</ContentContext.Provider>

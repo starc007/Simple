@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import toast, { Toaster } from "react-hot-toast";
+
 import { useContent } from "../../context/ContentContext";
 import Loader from "../../components/Loader";
+
 const modules = {
   toolbar: [
     [{ header: [1, 2, false] }],
@@ -39,6 +40,7 @@ const CreateDoc = () => {
       return;
     }
     const res = await CreateDocs(formData);
+    console.log("res", res);
     if (res) {
       toast.success("NFT minted successfully");
       setTimeout(() => {

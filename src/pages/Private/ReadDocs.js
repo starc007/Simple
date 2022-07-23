@@ -55,14 +55,26 @@ const ReadDocs = () => {
                 </p>
               </div>
             </div>
+            <div className="mt-4">
+              <p className="text-sm font-medium">
+                Last updated on:{" "}
+                <span className="font-bold">
+                  {moment(getHashData?.updatedAt).isAfter(
+                    moment().subtract(2, "days")
+                  )
+                    ? moment(getHashData?.updatedAt).fromNow()
+                    : moment(getHashData?.updatedAt).format("MMM Do YYYY")}
+                </span>
+              </p>
+            </div>
             <div className="mt-4 flex space-x-8 items-center">
               <p className="font-medium text-lg">
                 Collaborator: {getHashData?.collaborators?.length}
               </p>
               <div className="flex">
                 {getHashData?.collaborators?.length > 0 &&
-                  getHashData?.collaborators.map((collaborator) => (
-                    <div className="-ml-2">
+                  getHashData?.collaborators.map((collaborator, i) => (
+                    <div key={i} className="-ml-2">
                       <img
                         src={collaborator.avatar}
                         alt="avi"

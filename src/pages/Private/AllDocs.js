@@ -3,15 +3,18 @@ import Loader from "../../components/Loader";
 import moment from "moment";
 import { Menu, Transition } from "@headlessui/react";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { AiFillCrown } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import Modal from "../../components/Modal";
 import { useContent } from "../../context/ContentContext";
 import toast, { Toaster } from "react-hot-toast";
+import { useAuth } from "../../context/AuthContext";
 
 const AllDocs = ({ loading, data }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [docId, setDocId] = useState("");
   const { DeleteDocs } = useContent();
+  const { user } = useAuth();
 
   const handleDelete = async (docId) => {
     try {
@@ -35,18 +38,27 @@ const AllDocs = ({ loading, data }) => {
   }
 
   return (
-    <div className="mt-6 flex md:flex-row flex-col">
+    <div className="mt-6 flex md:flex-row flex-col  flex-wrap">
       <Toaster />
       {data.length > 0 ? (
         data.map((doc) => {
           return (
             <div
               key={doc._id}
-              className="w-60 py-3 border rounded-xl border-gray-400 hover:border-gray-800 mx-3"
+              className="w-60 py-3 border m-3 rounded-xl border-gray-400 hover:border-gray-800"
             >
-              <Modal isOpen={isOpen} setIsOpen={setIsOpen} docId={docId} />
+              <Modal
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                docId={docId}
+                isTokenCreated={doc.isTokenCreated}
+                hash={doc.transactionhash[0]}
+              />
               <div className="border-b border-gray-400 w-full h-36 flex justify-center items-center relative">
                 <img src="https://img.icons8.com/fluency/96/000000/new-document.png" />
+                {user?._id == doc.docsOwner && (
+                  <AiFillCrown className="absolute left-2 top-0 text-2xl" />
+                )}
                 <Menu
                   as="div"
                   className="absolute right-4 top-0 inline-block text-left"
@@ -135,7 +147,7 @@ const AllDocs = ({ loading, data }) => {
                 <p className="font-bold truncate text-gray-800 text-lg">
                   {doc.title}
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className="text-xs text-gray-600 font-medium">
                   {moment(doc.createdAt).format("MMM DD YYYY")}
                 </p>
                 <div className="flex mt-3 mx-2">

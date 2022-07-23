@@ -36,8 +36,8 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     localStorage.removeItem("Stoken");
-    setUser(null);
     window.location.href = "/";
+    setUser(null);
   };
 
   const GetProfile = async () => {
