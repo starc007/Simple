@@ -1,9 +1,8 @@
 import jwtDecode from "jwt-decode";
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.scss";
 import Navbar from "./components/Navbar";
-import { useAuth } from "./context/AuthContext";
 import Home from "./pages/Home";
 import CreateDoc from "./pages/Private/CreateDoc";
 import Dashboard from "./pages/Private/Dashboard";

@@ -5,31 +5,40 @@ import { useContent } from "../context/ContentContext";
 import Loader from "./Loader";
 import toast, { Toaster } from "react-hot-toast";
 import ABI from "../ABI.json";
-const contract_address = "0xaef00c3ff2e293e093d2dcd6ff64f533d6b9558a";
+import nftABi from "../mynftABI.json";
 
-const Modal = ({ isOpen, setIsOpen, docId, isTokenCreated, hash }) => {
+const CONTRACT_ADDRESS = "0x72d049c50941b267A282fC9031A1dedCE7414A85";
+
+const Modal = ({ isOpen, setIsOpen, docId, hash, isTokenCreated }) => {
   const [address, setAddress] = useState("");
-  const { AddCollaboratorToDocs, GetUser, GetTokenID } = useContent();
+  const { AddCollaboratorToDocs, GetUser, GetToken } = useContent();
   const [loading, setLoading] = useState(false);
 
-  const CreateTokens = async (tokenID) => {
-    let collection_address = "0xC497beD9692Babe5E2fEd96373D2fe82FB89C913";
+  const createToken = async (tokenID) => {
+    const COLLECTION_ADDRESS = "0xC497beD9692Babe5E2fEd96373D2fe82FB89C913";
+    const nft_contract = "0x1ba6b7b81f1ae7931247c5acf60ec5ce4061c586";
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
-    const contract = new ethers.Contract(contract_address, ABI, signer);
+    const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
+    // const tx1 = await contract.setApprovalForAll(nft_contract, true);
+    // const tx = await contract.initialize(nft_contract, 1, 10000);
+    // await tx.wait();
+    // return true;
+    // // const tx = await contract.safeMint(
+    // //   "0x3514a3c62d6ea657d4ec47eac0bb6858c04aa2d9",
+    // //   1
+    // // );
+    // // await tx.wait();
     try {
-      // let Approval = await contract.setApprovalForAll(collection_address, true);
-      // await Approval.wait();
-      const mintToken = await contract.initialize(
-        collection_address,
-        tokenID,
-        1000
+      const res = await provider.getBalance(
+        "0x3514a3C62d6ea657D4Ec47EaC0Bb6858c04Aa2D9"
       );
-      await mintToken.wait();
-      return true;
-    } catch (error) {
-      console.log(error);
+      let balance = ethers.utils.formatEther(res);
+      console.log(balance);
+    } catch (err) {
+      console.log(err);
     }
+    // const tx2 = await contract.intialize(coll);
   };
 
   const handleSubmit = async () => {
@@ -37,13 +46,10 @@ const Modal = ({ isOpen, setIsOpen, docId, isTokenCreated, hash }) => {
       toast.error("Please enter an address");
       return;
     }
-    setLoading(true);
-    if (!isTokenCreated) {
-      const tokenID = await GetTokenID(hash);
-      console.log("tokenid", tokenID);
-
-      const result = await CreateTokens(tokenID.token_id);
-    }
+    const resdata = await GetToken(hash);
+    console.log("res", resdata);
+    const tokenID = await createToken(resdata.token_id);
+    // setLoading(true);
     // const userdata = await GetUser({
     //   wallet_address: address.toLowerCase(),
     // });

@@ -26,7 +26,7 @@ export function AuthProvider({ children }) {
       const { data } = await Login(userdata);
       setUser(data.user);
       localStorage.setItem("Stoken", data.token);
-      window.location.href = "/doc";
+      return true;
     } catch (error) {
       console.log(error);
       setError(error);

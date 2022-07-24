@@ -51,8 +51,8 @@ const AllDocs = ({ loading, data }) => {
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
                 docId={docId}
-                isTokenCreated={doc.isTokenCreated}
                 hash={doc.transactionhash[0]}
+                isTokenCreated={doc.isTokenCreated}
               />
               <div className="border-b border-gray-400 w-full h-36 flex justify-center items-center relative">
                 <img src="https://img.icons8.com/fluency/96/000000/new-document.png" />

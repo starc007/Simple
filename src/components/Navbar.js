@@ -1,18 +1,20 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Loader from "./Loader";
+import logo from "../logo.jpeg";
 
 const Navbar = () => {
   const { login, loading, user, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
   return (
     <div className="py-5 flex justify-between">
       <Link
         to={user ? "/doc" : "/"}
         className="text-3xl font-bold text-gray-800"
       >
-        Simple
+        <img src={logo} alt="logo" className="h-12" />
       </Link>
       {user ? (
         <div className="relative">
@@ -47,7 +49,12 @@ const Navbar = () => {
         </div>
       ) : (
         <button
-          onClick={login}
+          onClick={async () => {
+            let res = await login();
+            if (res) {
+              navigate("/doc");
+            }
+          }}
           className="w-24 h-12 bg-gray-800 rounded-2xl font-medium text-white flex justify-center items-center"
         >
           {loading ? <Loader /> : "Login"}

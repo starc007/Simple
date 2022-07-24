@@ -40,7 +40,6 @@ const CreateDoc = () => {
       return;
     }
     const res = await CreateDocs(formData);
-    console.log("res", res);
     if (res) {
       toast.success("NFT minted successfully");
       setTimeout(() => {
