@@ -47,13 +47,7 @@ const AllDocs = ({ loading, data }) => {
               key={doc._id}
               className="w-60 py-3 border m-3 rounded-xl border-gray-400 hover:border-gray-800"
             >
-              <Modal
-                isOpen={isOpen}
-                setIsOpen={setIsOpen}
-                docId={docId}
-                hash={doc.transactionhash[0]}
-                isTokenCreated={doc.isTokenCreated}
-              />
+              <Modal isOpen={isOpen} setIsOpen={setIsOpen} docId={docId} />
               <div className="border-b border-gray-400 w-full h-36 flex justify-center items-center relative">
                 <img src="https://img.icons8.com/fluency/96/000000/new-document.png" />
                 {user?._id == doc.docsOwner && (
