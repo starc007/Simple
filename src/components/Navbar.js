@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Loader from "./Loader";
-import logo from "../logo.jpeg";
 
 const Navbar = () => {
   const { login, loading, user, logout } = useAuth();
@@ -14,7 +13,7 @@ const Navbar = () => {
         to={user ? "/doc" : "/"}
         className="text-3xl font-bold text-gray-800"
       >
-        <img src={logo} alt="logo" className="h-12" />
+        Simple
       </Link>
       {user ? (
         <div className="relative">

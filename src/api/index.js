@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// const URL = "http://localhost:5000/api/v1";
+const URL = "http://localhost:5000/api/v1";
 // const URL = "https://simple-server-psi.vercel.app/api/v1";
 
 const API = axios.create({
@@ -26,4 +26,3 @@ export const getUserFromWallet = (wallet) =>
 export const AddCollaborator = (data) => API.post("/add-collaborator", data);
 export const UpdateDocs = (data, hash) => API.post(`/update-nft/${hash}`, data);
 export const DeleteDoc = (docId) => API.delete(`/delete-nft/${docId}`);
-export const GetTokenId = (hash) => API.get(`/tokenid/${hash}`);

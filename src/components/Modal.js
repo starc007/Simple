@@ -1,73 +1,39 @@
 import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { ethers } from "ethers";
 import { useContent } from "../context/ContentContext";
 import Loader from "./Loader";
 import toast, { Toaster } from "react-hot-toast";
-import ABI from "../ABI.json";
-import nftABi from "../mynftABI.json";
 
-const CONTRACT_ADDRESS = "0x72d049c50941b267A282fC9031A1dedCE7414A85";
-
-const Modal = ({ isOpen, setIsOpen, docId, hash, isTokenCreated }) => {
+const Modal = ({ isOpen, setIsOpen, docId }) => {
   const [address, setAddress] = useState("");
-  const { AddCollaboratorToDocs, GetUser, GetToken } = useContent();
+  const { AddCollaboratorToDocs, GetUser } = useContent();
   const [loading, setLoading] = useState(false);
-
-  const createToken = async (tokenID) => {
-    const COLLECTION_ADDRESS = "0xC497beD9692Babe5E2fEd96373D2fe82FB89C913";
-    const nft_contract = "0x1ba6b7b81f1ae7931247c5acf60ec5ce4061c586";
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
-    // const tx1 = await contract.setApprovalForAll(nft_contract, true);
-    // const tx = await contract.initialize(nft_contract, 1, 10000);
-    // await tx.wait();
-    // return true;
-    // // const tx = await contract.safeMint(
-    // //   "0x3514a3c62d6ea657d4ec47eac0bb6858c04aa2d9",
-    // //   1
-    // // );
-    // // await tx.wait();
-    try {
-      const res = await provider.getBalance(
-        "0x3514a3C62d6ea657D4Ec47EaC0Bb6858c04Aa2D9"
-      );
-      let balance = ethers.utils.formatEther(res);
-      console.log(balance);
-    } catch (err) {
-      console.log(err);
-    }
-    // const tx2 = await contract.intialize(coll);
-  };
 
   const handleSubmit = async () => {
     if (!address) {
       toast.error("Please enter an address");
       return;
     }
-    const resdata = await GetToken(hash);
-    console.log("res", resdata);
-    const tokenID = await createToken(resdata.token_id);
-    // setLoading(true);
-    // const userdata = await GetUser({
-    //   wallet_address: address.toLowerCase(),
-    // });
-    // const data = {
-    //   docId,
-    //   collabId: userdata._id,
-    // };
-    // const res = await AddCollaboratorToDocs(data);
-    // if (res.status == 200) {
-    //   toast.success("Collaborator added!!");
-    //   setAddress("");
-    //   setIsOpen(false);
-    //   setLoading(false);
-    // } else if (res.status == 401) {
-    //   toast.error(res.data.message);
-    //   setLoading(false);
-    // }
-    // setLoading(false);
+    setLoading(true);
+    const userdata = await GetUser({
+      wallet_address: address.toLowerCase(),
+    });
+    const data = {
+      docId,
+      collabId: userdata._id,
+      wall_address: address.toLowerCase(),
+    };
+    const res = await AddCollaboratorToDocs(data);
+    if (res.status == 200) {
+      toast.success("Collaborator added!!");
+      setAddress("");
+      setIsOpen(false);
+      setLoading(false);
+    } else if (res.status == 401) {
+      toast.error(res.data.message);
+      setLoading(false);
+    }
+    setLoading(false);
   };
   return (
     <>
